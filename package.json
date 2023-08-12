@@ -1,0 +1,25 @@
+{
+  "name": "projeto18-freela-back",
+  "version": "1.0.0",
+  "type": "module",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "date-fns": "^2.30.0",
+    "dotenv": "^16.3.1",
+    "express": "^4.18.2",
+    "joi": "^17.9.2",
+    "nodemon": "^3.0.1",
+    "pg": "^8.11.1",
+    "postgres": "^3.3.5"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "start": "node src/app.js",
+    "dev": " npx nodemon src/app.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}
