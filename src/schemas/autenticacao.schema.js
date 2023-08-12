@@ -4,7 +4,7 @@ import joi from "joi";
     email: joi.string().email().required(),
     password: joi.string().required().min(3),
     name: joi.string().required(),
-    telefone: joi.string().required()
+    phone: joi.string().required()
   });
 
   export const signInSchema = joi.object({

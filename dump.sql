@@ -1,25 +1,24 @@
-CREATE TABLE usuarios (
+CREATE TABLE users (
     id SERIAL PRIMARY KEY,
-    nome VARCHAR(255),
-    cpf VARCHAR(14),
-    telefone VARCHAR(20),
+    name VARCHAR(255),
+    phone VARCHAR(20),
     email VARCHAR(255) UNIQUE,
-    senha VARCHAR(255)
+    password VARCHAR(255)
 );
-CREATE TABLE produtos (
+CREATE TABLE products (
     id SERIAL PRIMARY KEY,
-    id_do_vendedor INT REFERENCES usuarios(id),
-    nome VARCHAR(255),
-    descricao TEXT,
-    foto VARCHAR(255),
-    categoria VARCHAR(50),
+    id_seller INT REFERENCES users(id),
+    name VARCHAR(255),
+    description TEXT,
+    photo VARCHAR(255),
+    category VARCHAR(50),
     status VARCHAR(20),
-    dados_de_contato VARCHAR(255)
+    phone_seller VARCHAR(255)
 );
 
-CREATE TABLE tokens (
+CREATE TABLE sessions (
     id SERIAL PRIMARY KEY,
-    user_id INT REFERENCES usuarios(id),
+    user_id INT REFERENCES users(id),
     token VARCHAR(255) NOT NULL,
     expiration TIMESTAMP NOT NULL,
     token_type VARCHAR(50)
