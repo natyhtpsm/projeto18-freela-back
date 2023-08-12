@@ -5,6 +5,7 @@ CREATE TABLE users (
     email VARCHAR(255) UNIQUE,
     password VARCHAR(255)
 );
+
 CREATE TABLE products (
     id SERIAL PRIMARY KEY,
     id_seller INT REFERENCES users(id),
@@ -13,7 +14,7 @@ CREATE TABLE products (
     photo VARCHAR(255),
     category VARCHAR(50),
     status VARCHAR(20),
-    phone_seller VARCHAR(255)
+    price DECIMAL(10, 2), 
 );
 
 CREATE TABLE sessions (
