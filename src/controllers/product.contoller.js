@@ -28,9 +28,9 @@ export async function getProduct(req, res) {
 }
 
 export async function postProduct(req, res) {
-    res.locals.session = session;
-    const id_seller = session.user_id; 
-
+    const id_seller = res.locals.user_id; 
+    console.log('A4: ', id_seller);
+  
     const { name, description, photo, category, status, price, phone_seller } = req.body;
     const query = 'INSERT INTO products (id_seller, name, description, photo, category, status, price, phone_seller) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
   
@@ -41,5 +41,6 @@ export async function postProduct(req, res) {
     } catch (error) {
       return res.status(500).send(error.message);
     }
-}
+  }
+  
   

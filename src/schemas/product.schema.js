@@ -7,4 +7,5 @@ import joi from "joi";
       category: joi.string().required(),
       status: joi.string().required(),
       price: joi.number().min(0).precision(2).required(),
+      phone_seller: joi.string().required()
     });
