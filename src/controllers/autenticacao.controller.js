@@ -9,6 +9,31 @@ async function findUserByEmail(email) {
   return result.rows[0];
 }
 
+export async function getUserInfoFromToken(req, res, next) {
+  const token = req.headers.authorization?.replace("Bearer ", "");
+  if (!token) return res.status(401).send('Token inválido.');
+
+  try {
+    const query = `
+      SELECT users.id, users.name, users.phone, users.email
+      FROM users
+      JOIN sessions ON users.id = sessions.user_id
+      WHERE sessions.token = $1
+    `;
+    const values = [token];
+
+    const result = await db.query(query, values);
+
+    if (result.rows.length === 0) return res.status(401).send('Token inválido.');
+
+    res.locals.user = result.rows[0];
+    next();
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
+
 export async function signUp(req, res) {
   let { email, name, password, phone } = req.body;
 

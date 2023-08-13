@@ -18,7 +18,7 @@ export async function tokenValidation(req, res, next) {
     const result = await db.query(query, values);
     console.log('A3: ', result);
 
-    if (result.rowCount === 0) return res.status(401).send('Token inválido2.');
+    if (result.rows.length === 0) return res.status(401).send('Token inválido2.');
 
     res.locals = result.rows[0];
     console.log('A4: ', res.locals);
