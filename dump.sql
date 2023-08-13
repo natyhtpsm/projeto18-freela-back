@@ -14,7 +14,7 @@ CREATE TABLE products (
     photo VARCHAR(255),
     category VARCHAR(50),
     status VARCHAR(20),
-    price DECIMAL(10, 2), 
+    price DECIMAL(10, 2) 
 );
 
 CREATE TABLE sessions (
