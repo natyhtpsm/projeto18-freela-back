@@ -28,14 +28,18 @@ export async function getProduct(req, res) {
 }
 
 export async function postProduct(req, res) {
-  const { name, description, photo, category, status, price, phone_seller } = req.body;
-  const query = 'INSERT INTO products (name, description, photo, category, status, price, phone_seller) VALUES ($1, $2, $3, $4, $5, $6, $7)';
+    res.locals.session = session;
+    const id_seller = session.user_id; 
 
-  try {
-    const values = [name, description, photo, category, status, price, phone_seller];
-    await db.query(query, values);
-    res.send('Produto adicionado ao banco de dados.');
-  } catch (error) {
-    return res.status(500).send(error.message);
-  }
+    const { name, description, photo, category, status, price, phone_seller } = req.body;
+    const query = 'INSERT INTO products (id_seller, name, description, photo, category, status, price, phone_seller) VALUES ($1, $2, $3, $4, $5, $6, $7, $8)';
+  
+    try {
+      const values = [id_seller, name, description, photo, category, status, price, phone_seller];
+      await db.query(query, values);
+      res.send('Produto adicionado ao banco de dados.');
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
 }
+  
