@@ -18,3 +18,9 @@ export async function createSession(token, userId, expiration) {
     const insertSessionValues = [token, userId, expiration];
     await db.query(insertSessionQuery, insertSessionValues);
 }
+
+export async function logoutUser(userId, token) {
+    const deleteQuery = 'DELETE FROM sessions WHERE user_id = $1 AND token = $2';
+    const deleteValues = [userId, token];
+    await db.query(deleteQuery, deleteValues);
+  }
