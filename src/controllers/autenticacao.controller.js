@@ -1,6 +1,7 @@
 import bcrypt from "bcrypt";
 import { v4 as uuid } from "uuid";
 import { db } from "../database/database.js";
+import * as userRepository from "../repository/user.repository.js";
 
 async function findUserByEmail(email) {
   const query = 'SELECT * FROM users WHERE email = $1';
@@ -38,13 +39,11 @@ export async function signUp(req, res) {
   let { email, name, password, phone } = req.body;
 
   try {
-    const existingUser = await findUserByEmail(email);
+    const existingUser = await userRepository.findUserByEmail(email);
     if (existingUser) return res.status(409).send('Email já cadastrado!');
 
     const hashedPassword = await bcrypt.hash(password, 10);
-    const query = 'INSERT INTO users (email, password, name, phone) VALUES ($1, $2, $3, $4)';
-    const values = [email, hashedPassword, name, phone];
-    await db.query(query, values);
+    await userRepository.createUser(email, hashedPassword, name, phone);
   } catch (error) {
     return res.status(500).send(error.message);
   }
@@ -52,29 +51,28 @@ export async function signUp(req, res) {
   res.sendStatus(201);
 }
 
+
 export async function signIn(req, res) {
   const { email, password } = req.body;
 
   try {
-    const user = await findUserByEmail(email);
+    const user = await userRepository.findUserByEmail(email);
     if (!user) return res.status(404).send("E-mail não cadastrado!");
 
     const isPasswordCorrect = await bcrypt.compare(password, user.password);
     if (!isPasswordCorrect) return res.status(401).send("Senha incorreta!");
+
     const token = uuid();
     const expiration = new Date();
     expiration.setHours(expiration.getHours() + 1);
-    
-    const insertSessionQuery = 'INSERT INTO sessions (token, user_id, expiration) VALUES ($1, $2, $3)';
-    const insertSessionValues = [token, user.id, expiration];
-    await db.query(insertSessionQuery, insertSessionValues);
+
+    await userRepository.createSession(token, user.id, expiration);
 
     res.send({ token, username: user.name });
   } catch (err) {
     res.status(500).send(err.message);
   }
 }
-
 export async function logout(req, res) {
   const userId = res.locals.user_id;
   const token = req.headers.authorization?.replace('Bearer ', '');
