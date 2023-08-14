@@ -1,5 +1,5 @@
 import express from 'express';
-import { postProduct, getProduct, getProducts, getMyProducts } from '../controllers/product.contoller.js';
+import { postProduct, getProduct, getProducts, getMyProducts, updateProductStatus } from '../controllers/product.contoller.js';
 import { schemaValidation } from '../middlewares/schemaValidation.js';
 import { postProductSchema } from '../schemas/product.schema.js';
 import { tokenValidation } from '../middlewares/tokenValidation.js';
@@ -10,4 +10,5 @@ productRouter.post('/produto', tokenValidation, schemaValidation(postProductSche
 productRouter.get('/produto/:id', getProduct);
 productRouter.get('/home', getProducts);
 productRouter.get('/meus-produtos', tokenValidation, getMyProducts);
+productRouter.put('/atualizar/:productId', tokenValidation, updateProductStatus);
 export default productRouter;

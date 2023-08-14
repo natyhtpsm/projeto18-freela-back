@@ -68,7 +68,25 @@ export async function getMyProducts(req, res) {
   }
 }
 
+export async function updateProductStatus(req, res) {
+    const { productId } = req.params; 
+    const { newStatus } = req.body;
 
+    try {
+      const query = 'UPDATE products SET status = $1 WHERE id = $2 AND id_seller = $3';
+      const values = [newStatus, productId, res.locals.user_id];
+      const result = await db.query(query, values);
+
+      if (result.rowCount === 0) {
+        return res.status(404).send('Produto não encontrado ou não pertence ao usuário.');
+      }
+
+      res.send('Status do produto atualizado com sucesso.');
+    } catch (error) {
+      return res.status(500).send(error.message);
+    }
+}
+  
 export async function postProduct(req, res) {
     const id_seller = res.locals.user_id;
     console.log('A4: ', id_seller);
