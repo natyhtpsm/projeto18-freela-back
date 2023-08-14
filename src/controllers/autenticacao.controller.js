@@ -74,3 +74,23 @@ export async function signIn(req, res) {
     res.status(500).send(err.message);
   }
 }
+
+export async function logout(req, res) {
+  const userId = res.locals.user_id;
+  const token = req.headers.authorization?.replace('Bearer ', '');
+
+  if (!userId || !token) {
+    return res.status(400).send('ID do usuário ou token inválido.');
+  }
+
+  try {
+    const deleteQuery = 'DELETE FROM sessions WHERE user_id = $1 AND token = $2';
+    const deleteValues = [userId, token];
+    await db.query(deleteQuery, deleteValues);
+
+    res.send('Logout bem-sucedido');
+  } catch (error) {
+    return res.status(500).send(error.message);
+  }
+}
+
