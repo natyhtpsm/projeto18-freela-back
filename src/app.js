@@ -5,7 +5,7 @@ import productRouter from "./routers/product.router.js";
 import dotenv from "dotenv";
 
 const app = express();
-dotev.config()
+dotenv.config();
 app.use(cors());
 app.use(express.json());
 app.use(authRouter);
